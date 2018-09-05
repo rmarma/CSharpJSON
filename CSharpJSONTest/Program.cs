@@ -11,6 +11,7 @@ namespace CSharpJSONTest
         {
             Test1();
             Test2();
+            Test3();
 
             Console.ReadKey();
         }
@@ -37,6 +38,18 @@ namespace CSharpJSONTest
             Console.WriteLine("double: " + jsonObject.OptDouble("double", 0.0));
             Console.WriteLine("bool: " + jsonObject.OptBoolean("bool", false));
             Console.WriteLine("string: " + jsonObject.OptString("string", ""));
+            Console.WriteLine("=== END ===");
+        }
+
+        private static void Test3()
+        {
+            string jsonString = "[{\"int\":1,\"double\":1.1,\"bool\":true,\"string\":\"string\"},{\"int\":2,\"double\":2.2,\"bool\":false,\"string\":\"string\"}]";
+            JSONArray jsonArray = new JSONArray(jsonString);
+            Console.WriteLine("=== TEST ===");
+            Console.WriteLine(jsonString);
+            Console.WriteLine(jsonArray.ToString());
+            jsonArray.Remove(0);
+            Console.WriteLine(jsonArray.ToString());
             Console.WriteLine("=== END ===");
         }
     }

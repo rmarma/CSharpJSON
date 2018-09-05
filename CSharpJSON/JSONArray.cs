@@ -348,7 +348,9 @@ namespace CSharpJSON
             {
                 return null;
             }
-            return values.Remove(index);
+            var obj = values[index];
+            values.RemoveAt(index);
+            return obj;
         }
 
         /**

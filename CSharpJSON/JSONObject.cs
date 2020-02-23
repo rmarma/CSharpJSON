@@ -79,7 +79,7 @@ namespace CSharpJSON
     /// <summary>
     /// TODO summary
     /// </summary>
-    public class JSONObject
+    public sealed class JSONObject
     {
 
         public sealed class NullObject
@@ -118,9 +118,14 @@ namespace CSharpJSON
          * returning true when compared to {@code null}. Its {@link #toString}
          * method returns "null".
          */
-        public static readonly object NULL = new NullObject();
+        //public static readonly object NULL = new NullObject();
+        public static object Null { get; } = new NullObject();
 
-        private readonly Dictionary<string, object> nameValuePairs;
+        private readonly IDictionary<string, object> nameValuePairs;
+
+
+        public int Count => nameValuePairs.Count;
+
 
         /**
          * Creates a {@code JSONObject} with no name/value mappings.
@@ -489,7 +494,7 @@ namespace CSharpJSON
             {
                 value = nameValuePairs[name];
             }
-            return value == null || value == NULL;
+            return value == null || value == Null;
         }
 
         /**
@@ -556,7 +561,7 @@ namespace CSharpJSON
          * Returns the value mapped by {@code name} if it exists and is a boolean or
          * can be coerced to a boolean, or {@code fallback} otherwise.
          */
-        public bool OptBoolean(String name, bool fallback)
+        public bool OptBoolean(string name, bool fallback)
         {
             object obj = Opt(name);
             bool? result = JSON.ToBoolean(obj);
@@ -574,6 +579,17 @@ namespace CSharpJSON
         {
             object obj = Get(name);
             double? result = JSON.ToDouble(obj);
+            if (result == null)
+            {
+                throw JSON.TypeMismatch(name, obj, "double");
+            }
+            return (double)result;
+        }
+
+        public double GetDouble(string name, NumberStyles numberStyles, IFormatProvider formatProvider)
+        {
+            object obj = Get(name);
+            double? result = JSON.ToDouble(obj, numberStyles, formatProvider);
             if (result == null)
             {
                 throw JSON.TypeMismatch(name, obj, "double");
@@ -601,6 +617,13 @@ namespace CSharpJSON
             return result != null ? (double)result : fallback;
         }
 
+        public double OptDouble(string name, double fallback, NumberStyles numberStyles, IFormatProvider formatProvider)
+        {
+            object obj = Opt(name);
+            double? result = JSON.ToDouble(obj, numberStyles, formatProvider);
+            return result != null ? (double)result : fallback;
+        }
+
         /**
          * Returns the value mapped by {@code name} if it exists and is an int or
          * can be coerced to an int, or throws otherwise.
@@ -612,6 +635,17 @@ namespace CSharpJSON
         {
             object obj = Get(name);
             int? result = JSON.ToInteger(obj);
+            if (result == null)
+            {
+                throw JSON.TypeMismatch(name, obj, "int");
+            }
+            return (int)result;
+        }
+
+        public int GetInt(string name, NumberStyles numberStyles, IFormatProvider formatProvider)
+        {
+            object obj = Get(name);
+            int? result = JSON.ToInteger(obj, numberStyles, formatProvider);
             if (result == null)
             {
                 throw JSON.TypeMismatch(name, obj, "int");
@@ -639,6 +673,13 @@ namespace CSharpJSON
             return result != null ? (int)result : fallback;
         }
 
+        public int OptInt(string name, int fallback, NumberStyles numberStyles, IFormatProvider formatProvider)
+        {
+            object obj = Opt(name);
+            int? result = JSON.ToInteger(obj, numberStyles, formatProvider);
+            return result != null ? (int)result : fallback;
+        }
+
         /**
          * Returns the value mapped by {@code name} if it exists and is a long or
          * can be coerced to a long, or throws otherwise.
@@ -652,6 +693,17 @@ namespace CSharpJSON
         {
             object obj = Opt(name);
             long? result = JSON.ToLong(obj);
+            if (result == null)
+            {
+                throw JSON.TypeMismatch(name, obj, "long");
+            }
+            return (long)result;
+        }
+
+        public long GetLong(string name, NumberStyles numberStyles, IFormatProvider formatProvider)
+        {
+            object obj = Opt(name);
+            long? result = JSON.ToLong(obj, numberStyles, formatProvider);
             if (result == null)
             {
                 throw JSON.TypeMismatch(name, obj, "long");
@@ -679,6 +731,13 @@ namespace CSharpJSON
         {
             object obj = Opt(name);
             long? result = JSON.ToLong(obj);
+            return result != null ? (long)result : fallback;
+        }
+
+        public long OptLong(string name, long fallback, NumberStyles numberStyles, IFormatProvider formatProvider)
+        {
+            object obj = Opt(name);
+            long? result = JSON.ToLong(obj, numberStyles, formatProvider);
             return result != null ? (long)result : fallback;
         }
 
@@ -798,8 +857,7 @@ namespace CSharpJSON
             }
             for (int i = 0; i < length; ++i)
             {
-                string name = JSON.ToString(names.Opt(i));
-                result.Put(Opt(name));
+                result.Put(Opt(JSON.ToString(names.Opt(i))));
             }
             return result;
         }
@@ -977,13 +1035,13 @@ namespace CSharpJSON
         {
             if (o == null)
             {
-                return NULL;
+                return Null;
             }
             if (o is JSONArray || o is JSONObject)
             {
                 return o;
             }
-            if (o.Equals(NULL))
+            if (o.Equals(Null))
             {
                 return o;
             }
@@ -1015,8 +1073,9 @@ namespace CSharpJSON
                 }
                 return o.ToString();
             }
-            catch (Exception ignored)
+            catch
             {
+                // ignored
             }
             return null;
         }

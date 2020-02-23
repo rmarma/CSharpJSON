@@ -1,6 +1,7 @@
 ﻿// R.M.A., 2018
 
 using System;
+using System.Globalization;
 using CSharpJSON;
 
 namespace CSharpJSONTest
@@ -12,6 +13,7 @@ namespace CSharpJSONTest
             Test1();
             Test2();
             Test3();
+            Test4();
 
             Console.ReadKey();
         }
@@ -50,6 +52,23 @@ namespace CSharpJSONTest
             Console.WriteLine(jsonArray.ToString());
             jsonArray.Remove(0);
             Console.WriteLine(jsonArray.ToString());
+            Console.WriteLine("=== END ===");
+        }
+
+        private static void Test4()
+        {
+            double en = 1.1;
+            double ru = 1.2;
+            var enUS = CultureInfo.CreateSpecificCulture("en-US");
+            var ruRU = CultureInfo.CreateSpecificCulture("ru-RU");
+
+            JSONObject json = new JSONObject();
+            json.Put("en", en.ToString(enUS));
+            json.Put("ru", ru.ToString(ruRU));
+            Console.WriteLine("=== TEST ===");
+            Console.WriteLine(json.ToString());
+            Console.WriteLine(json.OptDouble("en"));
+            Console.WriteLine(json.OptDouble("ru", double.NaN, NumberStyles.Any, ruRU));
             Console.WriteLine("=== END ===");
         }
     }

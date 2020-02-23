@@ -61,7 +61,7 @@ namespace CSharpJSON
     /// Item 17, "Design and Document or inheritance or else prohibit it" for further
     /// information.
     /// </summary>
-    public class JSONStringer
+    public sealed class JSONStringer
     {
         /// <summary>
         /// The output data, containing at most one top-level array or object.
@@ -267,7 +267,7 @@ namespace CSharpJSON
 
             BeforeValue();
 
-            if (value == null || value == JSONObject.NULL)
+            if (value == null || value == JSONObject.Null)
             {
                 sbOut.Append(value);
 

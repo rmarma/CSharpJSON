@@ -68,7 +68,7 @@ namespace CSharpJSON
     /// <summary>
     /// TODO summary
     /// </summary>
-    public class JSONTokener
+    public sealed class JSONTokener
     {
         /** The input JSON. */
         private readonly string input;
@@ -287,7 +287,7 @@ namespace CSharpJSON
                         //return (char)int.Parse(hex, 16);
                         return (char)Convert.ToInt32(hex, 16);
                     }
-                    catch (FormatException fe)
+                    catch
                     {
                         throw SyntaxError("Invalid escape sequence: " + hex);
                     }
@@ -330,7 +330,7 @@ namespace CSharpJSON
             }
             else if ("null".Equals(literal, StringComparison.OrdinalIgnoreCase))
             {
-                return JSONObject.NULL;
+                return JSONObject.Null;
             }
             else if ("true".Equals(literal, StringComparison.OrdinalIgnoreCase))
             {
@@ -368,7 +368,7 @@ namespace CSharpJSON
                         return longValue;
                     }
                 }
-                catch (FormatException e)
+                catch
                 {
                     /*
                      * This only happens for integral numbers greater than
@@ -383,7 +383,10 @@ namespace CSharpJSON
             {
                 return double.Parse(literal, CultureInfo.InvariantCulture);
             }
-            catch (FormatException ignored) { }
+            catch
+            {
+                // ignored
+            }
 
             /* ... finally give up. We have an unquoted string */
             //return new String(literal); // a new string avoids leaking memory

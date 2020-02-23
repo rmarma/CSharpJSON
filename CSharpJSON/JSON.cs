@@ -17,10 +17,10 @@
  // R.M.A., 2018
 
 using System;
+using System.Globalization;
 
 namespace CSharpJSON
 {
-
     public static class JSON
     {
         /// <summary>
@@ -68,9 +68,32 @@ namespace CSharpJSON
             {
                 try
                 {
-                    return double.Parse((string)value);
+                    return double.Parse((string)value, CultureInfo.InvariantCulture);
                 }
-                catch { }
+                catch
+                {
+                    // ignored
+                }
+            }
+            return null;
+        }
+
+        public static double? ToDouble(object value, NumberStyles numberStyles, IFormatProvider formatProvider)
+        {
+            if (value is double)
+            {
+                return (double)value;
+            }
+            else if (value is string)
+            {
+                try
+                {
+                    return double.Parse((string)value, numberStyles, formatProvider);
+                }
+                catch
+                {
+                    // ignored
+                }
             }
             return null;
         }
@@ -85,9 +108,32 @@ namespace CSharpJSON
             {
                 try
                 {
-                    return int.Parse((string)value);
+                    return int.Parse((string)value, CultureInfo.InvariantCulture);
                 }
-                catch { }
+                catch
+                {
+                    // ignored
+                }
+            }
+            return null;
+        }
+
+        public static int? ToInteger(object value, NumberStyles numberStyles, IFormatProvider formatProvider)
+        {
+            if (value is int)
+            {
+                return (int)value;
+            }
+            else if (value is string)
+            {
+                try
+                {
+                    return int.Parse((string)value, numberStyles, formatProvider);
+                }
+                catch
+                {
+                    // ignored
+                }
             }
             return null;
         }
@@ -102,9 +148,32 @@ namespace CSharpJSON
             {
                 try
                 {
-                    return long.Parse((string)value);
+                    return long.Parse((string)value, CultureInfo.InvariantCulture);
                 }
-                catch { }
+                catch
+                {
+                    // ignored
+                }
+            }
+            return 0L;
+        }
+
+        public static long ToLong(object value, NumberStyles numberStyles, IFormatProvider formatProvider)
+        {
+            if (value is long)
+            {
+                return (long)value;
+            }
+            else if (value is string)
+            {
+                try
+                {
+                    return long.Parse((string)value, numberStyles, formatProvider);
+                }
+                catch
+                {
+                    // ignored
+                }
             }
             return 0L;
         }

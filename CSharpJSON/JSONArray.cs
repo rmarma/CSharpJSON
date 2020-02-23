@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace CSharpJSON
 {
@@ -48,9 +49,13 @@ namespace CSharpJSON
     /// <summary>
     /// TODO summary
     /// </summary>
-    public class JSONArray
+    public sealed class JSONArray
     {
+
         private readonly List<object> values;
+
+
+        public int Count => values.Count;
 
         /**
          * Creates a {@code JSONArray} with no values.
@@ -298,7 +303,7 @@ namespace CSharpJSON
         public bool IsNull(int index)
         {
             object value = Opt(index);
-            return value == null || value == JSONObject.NULL;
+            return value == null || value == JSONObject.Null;
         }
 
         /**
@@ -409,6 +414,17 @@ namespace CSharpJSON
             return (double)result;
         }
 
+        public double GetDouble(int index, NumberStyles numberStyles, IFormatProvider formatProvider)
+        {
+            object obj = Get(index);
+            double? result = JSON.ToDouble(obj, numberStyles, formatProvider);
+            if (result == null)
+            {
+                throw JSON.TypeMismatch(index, obj, "double");
+            }
+            return (double)result;
+        }
+
         /**
          * Returns the value at {@code index} if it exists and is a double or can
          * be coerced to a double. Returns {@code NaN} otherwise.
@@ -429,6 +445,13 @@ namespace CSharpJSON
             return result != null ? (double)result : fallback;
         }
 
+        public double OptDouble(int index, double fallback, NumberStyles numberStyles, IFormatProvider formatProvider)
+        {
+            object obj = Opt(index);
+            double? result = JSON.ToDouble(obj, numberStyles, formatProvider);
+            return result != null ? (double)result : fallback;
+        }
+
         /**
          * Returns the value at {@code index} if it exists and is an int or
          * can be coerced to an int.
@@ -440,6 +463,17 @@ namespace CSharpJSON
         {
             object obj = Get(index);
             int? result = JSON.ToInteger(obj);
+            if (result == null)
+            {
+                throw JSON.TypeMismatch(index, obj, "int");
+            }
+            return (int)result;
+        }
+
+        public int GetInt(int index, NumberStyles numberStyles, IFormatProvider formatProvider)
+        {
+            object obj = Get(index);
+            int? result = JSON.ToInteger(obj, numberStyles, formatProvider);
             if (result == null)
             {
                 throw JSON.TypeMismatch(index, obj, "int");
@@ -467,6 +501,13 @@ namespace CSharpJSON
             return result != null ? (int)result : fallback;
         }
 
+        public int OptInt(int index, int fallback, NumberStyles numberStyles, IFormatProvider formatProvider)
+        {
+            object obj = Opt(index);
+            int? result = JSON.ToInteger(obj, numberStyles, formatProvider);
+            return result != null ? (int)result : fallback;
+        }
+
         /**
          * Returns the value at {@code index} if it exists and is a long or
          * can be coerced to a long.
@@ -478,6 +519,17 @@ namespace CSharpJSON
         {
             object obj = Get(index);
             long? result = JSON.ToLong(obj);
+            if (result == null)
+            {
+                throw JSON.TypeMismatch(index, obj, "long");
+            }
+            return (long)result;
+        }
+
+        public long GetLong(int index, NumberStyles numberStyles, IFormatProvider formatProvider)
+        {
+            object obj = Get(index);
+            long? result = JSON.ToLong(obj, numberStyles, formatProvider);
             if (result == null)
             {
                 throw JSON.TypeMismatch(index, obj, "long");
@@ -502,6 +554,13 @@ namespace CSharpJSON
         {
             object obj = Opt(index);
             long? result = JSON.ToLong(obj);
+            return result != null ? (long)result : fallback;
+        }
+
+        public long OptLong(int index, long fallback, NumberStyles numberStyles, IFormatProvider formatProvider)
+        {
+            object obj = Opt(index);
+            long? result = JSON.ToLong(obj, numberStyles, formatProvider);
             return result != null ? (long)result : fallback;
         }
 

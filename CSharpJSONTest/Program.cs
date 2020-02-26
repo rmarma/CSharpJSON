@@ -14,6 +14,7 @@ namespace CSharpJSONTest
             Test2();
             Test3();
             Test4();
+            Test5();
 
             Console.ReadKey();
         }
@@ -69,6 +70,20 @@ namespace CSharpJSONTest
             Console.WriteLine(json.ToString());
             Console.WriteLine(json.OptDouble("en"));
             Console.WriteLine(json.OptDouble("ru", double.NaN, NumberStyles.Any, ruRU));
+            Console.WriteLine("=== END ===");
+        }
+
+        private static void Test5()
+        {
+            JSONObject json = new JSONObject();
+            json.Put("int", 1);
+            json.Put("double", 2.2);
+            Console.WriteLine("=== TEST ===");
+            Console.WriteLine(json.ToString());
+            Console.WriteLine(json.OptDouble("int", 0.0));
+            Console.WriteLine(json.OptDouble("double", 0.0));
+            Console.WriteLine(json.OptInt("int", 0));
+            Console.WriteLine(json.OptInt("double", 0));
             Console.WriteLine("=== END ===");
         }
     }

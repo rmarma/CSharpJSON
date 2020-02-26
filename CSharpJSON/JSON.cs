@@ -75,6 +75,17 @@ namespace CSharpJSON
                     // ignored
                 }
             }
+            else if (value is IConvertible)
+            {
+                try
+                {
+                    return ((IConvertible)value).ToDouble(CultureInfo.InvariantCulture);
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
             return null;
         }
 
@@ -89,6 +100,17 @@ namespace CSharpJSON
                 try
                 {
                     return double.Parse((string)value, numberStyles, formatProvider);
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+            else if (value is IConvertible)
+            {
+                try
+                {
+                    return ((IConvertible)value).ToDouble(formatProvider);
                 }
                 catch
                 {
@@ -115,6 +137,17 @@ namespace CSharpJSON
                     // ignored
                 }
             }
+            else if (value is IConvertible)
+            {
+                try
+                {
+                    return ((IConvertible)value).ToInt32(CultureInfo.InvariantCulture);
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
             return null;
         }
 
@@ -129,6 +162,17 @@ namespace CSharpJSON
                 try
                 {
                     return int.Parse((string)value, numberStyles, formatProvider);
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+            else if (value is IConvertible)
+            {
+                try
+                {
+                    return ((IConvertible)value).ToInt32(formatProvider);
                 }
                 catch
                 {
@@ -155,6 +199,17 @@ namespace CSharpJSON
                     // ignored
                 }
             }
+            else if (value is IConvertible)
+            {
+                try
+                {
+                    return ((IConvertible)value).ToInt64(CultureInfo.InvariantCulture);
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
             return 0L;
         }
 
@@ -169,6 +224,17 @@ namespace CSharpJSON
                 try
                 {
                     return long.Parse((string)value, numberStyles, formatProvider);
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+            else if (value is IConvertible)
+            {
+                try
+                {
+                    return ((IConvertible)value).ToInt64(formatProvider);
                 }
                 catch
                 {

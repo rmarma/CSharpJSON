@@ -2,6 +2,7 @@
 
 using System;
 using System.Globalization;
+using System.Text;
 using CSharpJSON;
 
 namespace CSharpJSONTest
@@ -15,6 +16,7 @@ namespace CSharpJSONTest
             Test3();
             Test4();
             Test5();
+            Test6();
 
             Console.ReadKey();
         }
@@ -84,6 +86,18 @@ namespace CSharpJSONTest
             Console.WriteLine(json.OptDouble("double", 0.0));
             Console.WriteLine(json.OptInt("int", 0));
             Console.WriteLine(json.OptInt("double", 0));
+            Console.WriteLine("=== END ===");
+        }
+
+        private static void Test6()
+        {
+            // {"s":"\"Test\""}
+            byte[] data = { 0x7b, 0x22, 0x73, 0x22, 0x3a, 0x22, 0x5c, 0x22, 0x54, 0x65, 0x73, 0x74, 0x5c, 0x22, 0x22, 0x7d };
+
+            JSONObject json = new JSONObject(Encoding.UTF8.GetString(data));
+            Console.WriteLine("=== TEST ===");
+            Console.WriteLine(json.ToString());
+            Console.WriteLine(json.OptString("s", ""));
             Console.WriteLine("=== END ===");
         }
     }

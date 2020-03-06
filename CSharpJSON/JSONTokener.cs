@@ -255,7 +255,7 @@ namespace CSharpJSON
                         builder = new StringBuilder();
                     }
                     //builder.Append(input, start, pos - 1);
-                    builder.Append(input, start, pos - start);
+                    builder.Append(input, start, pos - start - 1);
                     builder.Append(ReadEscapeCharacter());
                     start = pos;
                 }
